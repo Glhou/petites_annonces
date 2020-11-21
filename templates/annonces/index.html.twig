@@ -1,6 +1,20 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %} Petites Annonces {% endblock %}
 
-{% block body %}
+{% block content %}
+<!-- page des annonces -->
+    {% for annonce in Ad%}
+        <annonce>
+            <h2> {{ annonce.title}} </h2>
+            <div class="metadata"> 
+                Posté le {{annonce.date | date ('d/m/Y')}} à {{annonce.date | date ('H:i')}} par {{annonce.author.username}}.
+            </div>
+            <div class="content">
+                {{annonce.description}}
+            </div>
+
+        </annonce>
+    {% endfor %}
 {% endblock %}
