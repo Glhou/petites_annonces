@@ -9,7 +9,7 @@
         <meta name="Keywords" content="ginfo, groupe, informatique, it, association">
         <meta name="Copyright" content="GINFO">
         <meta name="Revisit-After" content="15 days">
-        <title>{% block titre_page %}GInfo{% endblock %}</title>
+        <title>{% block titre_page %}Peties Annonces{% endblock %}</title>
         <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
         <link rel="stylesheet" href="{{ asset('build/vendor.css') }}" />
         <link rel="stylesheet" href="{{ asset('build/app.css') }}" />
@@ -20,47 +20,47 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
               rel="stylesheet">
-        <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css"> 
     </head>
 
-    <body {% block additionnal_body_block %}{% endblock %} class="theme-indigo {% block additionnal_body_class %}{% endblock %}">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Petites Annonces</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <body {% block additionnal_body_block %}{% endblock %} class=" theme-indigo {% block additionnal_body_class %}{% endblock %}">
+    <!-- navbar -->
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    {% if is_granted('ROLE_USER') %}
+                        {% block mobile_collapse %}
+                            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                        {% endblock %}
+                        <a href="javascript:void(0);" class="bars"></a>
+                    {% endif %}
 
-        <div class="collapse navbar-collapse" id="navbarColor03">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Acceuil
-                <span class="sr-only">(current)</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Nouvel Annonce</a>
-            {% if is_granted('ROLE_USER') %}
-                <li>
-                    <a href="">
-                        <i class="material-icons">settings</i>
+                    <a class="navbar-brand" href="/home">
+                        Petites Annonces
                     </a>
-                </li>
-                <li>
-                    <a href="{{ path('user_logout') }}">
-                        <i class="material-icons">power_settings_new</i>
-                    </a>
-                </li>
-            {% endif %}
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
+
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if is_granted('ROLE_USER') %}
+                            <li>
+                                <a href="">
+                                    <i class="material-icons">settings</i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('user_logout') }}">
+                                    <i class="material-icons">power_settings_new</i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </nav>
-        
-       
 
+
+
+        <!-- contenus -->
         <section class="content">
             <div class="container-fluid">
                 {% block content %}
@@ -68,6 +68,7 @@
             </div>
         </section>
 
+        <!-- infos en bas -->
         <div class="footer">
             <div class="footer-content">
                 <b>GInfo</b> 2019 - <a href="https://assos.centrale-marseille.fr/ginfo">GInfo</a> -
@@ -75,6 +76,7 @@
             </div>
         </div>
 
+        <!-- alertes -->
         <div class="container-fluid">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
@@ -84,7 +86,7 @@
                 {% endfor %}
             {% endfor %}
         </div>
-
+        <!-- notifications en bulle -->
         <div id="app-notifs">
             {% for type, messages in app.flashes %}
                 {% for message in messages %}
