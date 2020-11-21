@@ -7,8 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraint as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity("username", message="Username already used")
+ * @UniqueEntity("email", message="Email already used")
  */
 class User
 {
@@ -20,12 +26,12 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
