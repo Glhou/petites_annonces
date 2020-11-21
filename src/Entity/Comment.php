@@ -44,12 +44,12 @@ class Comment
         return $this->id;
     }
 
-    public function getAd(): ?User
+    public function getAd(): ?Ad
     {
         return $this->ad;
     }
 
-    public function setAd(?User $ad): self
+    public function setAd(?Ad $ad): self
     {
         $this->ad = $ad;
 
