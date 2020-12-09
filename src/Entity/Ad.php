@@ -2,11 +2,17 @@
 
 namespace App\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
+ * @UniqueEntity(
+ *      fields={"author","title"},
+ *      message="This author has already an Ad with this title."
+ * )
  */
 class Ad
 {
