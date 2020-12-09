@@ -26,11 +26,5 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/", name="home")
-     */
-    public function home(){
-        return $this->render('home.html.twig', [
-        ]);
-    }
+    
 }
