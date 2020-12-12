@@ -21,7 +21,7 @@ class UserFixtures extends Fixture
                  ->setEmail($nom."@".$faker->freeEmailDomain)
                  ->setPassword("test")
                  ->setFirstName($faker->firstName)
-                 ->setRoles($faker->creditCardDetails)
+                 ->setRoles($faker->creditCardDetails) /* TODO : changer en mode ["Role_User"]*/
                  ->setLastName($faker->lastName)
                  ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
             $user_list[$i] = $user;
@@ -39,10 +39,10 @@ class UserFixtures extends Fixture
                 ->setType($faker->numberBetween($min = 0, $max = 5));
             $manager -> persist($ad);
 
-            for ($l = 1; $l <= mt_rand(60,100); $l++){
+            for ($l = 1; $l <= mt_rand(4,9); $l++){
                 $comment = new Comment();
                 $days = (new \DateTime())->diff($ad->getDate())->days;
-                $comment->setAuthor($user_list[mt_rand(1,100)])
+                $comment->setAuthor($user_list[$l % 100])
                     ->setAd($ad)
                     ->setDate($faker->dateTimeBetween('-' . $days . 'days'))
                     ->setContent($faker->text($maxNbChars = 200));
