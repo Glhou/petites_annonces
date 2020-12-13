@@ -18,11 +18,12 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/annonces", name="annonces")
      */
-    public function index(AdRepository $repo): Response
+    public function index(AdRepository $repoAd, CommentRepository $repoComment): Response
     {
-        $ad = $repo->findAll();
+        $ad = $repoAd->findAll();
+        $comment = $repoComment->findAll();
         return $this->render('annonces/index.html.twig', [
-            'Ad' => $ad,
+            'Ad' => $ad, 'Comment' => $comment,
         ]);
     }
 

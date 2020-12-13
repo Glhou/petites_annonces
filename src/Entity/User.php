@@ -9,14 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity("username", message="Username already used")
  * @UniqueEntity("email", message="Email already used")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -32,6 +33,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -39,6 +41,11 @@ class User
      * @ORM\Column(type="string", length=255)
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(propertyPath="password", message="Les mots de passe ne correspondent pas")
+     */
+    private $confirm_password;
 
     /**
      * @ORM\Column(type="json_array")
@@ -101,6 +108,18 @@ class User
         return $this;
     }
 
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirm_password;
+    }
+
+    public function setConfirmPassword(string $password): self
+    {
+        $this->confirm_password = $password;
+
+        return $this;
+    }
+
     public function getRoles(): ?array
     {
         return $this->roles;
@@ -149,4 +168,13 @@ class User
         return $this;
     }
 
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
