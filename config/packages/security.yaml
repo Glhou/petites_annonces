@@ -20,8 +20,8 @@ security:
             form_login:
                 login_path: security_login
                 check_path: security_login
-                # default_target_path: annonces
-                # always_use_default_target_path: true
+                default_target_path: annonces
+                always_use_default_target_path: true
             logout:
                 path: security_logout
                 target: /
