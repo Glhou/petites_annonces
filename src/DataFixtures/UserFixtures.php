@@ -62,29 +62,35 @@ class UserFixtures extends Fixture
                     ->setContent($faker->text($maxNbChars = 200));
                 $manager->persist($comment);
             }
-            $userAdmin = new User();
-            $userSuperAdmin = new User();
-            $userAdmin->setUsername("admin")
-                ->setEmail($nom."@".$faker->freeEmailDomain)
-                ->setPassword("test")
-                ->setFirstName($faker->firstName)
-                ->setRoles(["ROLE_ADMIN"])
-                ->setLastName($faker->lastName)
-                ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
-            $userSuperAdmin->setUsername("superadmin")
-                ->setEmail($nom."@".$faker->freeEmailDomain)
-                ->setPassword("test")
-                ->setFirstName($faker->firstName)
-                ->setRoles(["ROLE_ADMIN"])
-                ->setLastName($faker->lastName)
-                ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
-            $userAdmin->setPassword($encoder->encodePassword($userAdmin,$userAdmin->getPassword()));
-            $userSuperAdmin->setPassword($encoder->encodePassword($userSuperAdmin,$userSuperAdmin->getPassword()));
-            $manager->persist($userAdmin);
-            $manager->persist($userSuperAdmin);
+
+
 
         }
-        
+        //création d'un admin et d'un modo
+        $nom1 = $faker->userName;
+        $nom2 = $faker->userName;
+        $userAdmin = new User();
+        $userModo = new User();
+        $userAdmin->setUsername("admin")
+            ->setEmail($nom1."@".$faker->freeEmailDomain)
+            ->setPassword("test")
+            ->setFirstName($faker->firstName)
+            ->setRoles(["ROLE_ADMIN"])
+            ->setLastName($faker->lastName)
+            ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
+        $userModo->setUsername("modo")
+            ->setEmail($nom2."@".$faker->freeEmailDomain)
+            ->setPassword("test")
+            ->setFirstName($faker->firstName)
+            ->setRoles(["ROLE_MODO"])
+            ->setLastName($faker->lastName)
+            ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
+
+        $userAdmin->setPassword($encoder->encodePassword($userAdmin,$userAdmin->getPassword()));
+        $userModo->setPassword($encoder->encodePassword($userModo,$userModo->getPassword()));
+        $manager->persist($userAdmin);
+        $manager->persist($userModo);
+
 
         $manager->flush();
     }
