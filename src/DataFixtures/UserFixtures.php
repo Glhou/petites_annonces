@@ -31,7 +31,7 @@ class UserFixtures extends Fixture
                  ->setEmail($nom."@".$faker->freeEmailDomain)
                  ->setPassword("test")
                  ->setFirstName($faker->firstName)
-                 ->setRoles(["Role_User"])
+                 ->setRoles(["ROLE_USER"])
                  ->setLastName($faker->lastName)
                  ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
             $user_list[$i] = $user;

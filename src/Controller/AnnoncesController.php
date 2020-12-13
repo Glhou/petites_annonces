@@ -11,8 +11,13 @@ use App\Entity\User;
 use App\Repository\AdRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-
+/**
+ * Class AnnoncesController
+ * @package App\Controller
+ * @IsGranted("ROLE_USER")
+ */
 class AnnoncesController extends AbstractController
 {
     /**
