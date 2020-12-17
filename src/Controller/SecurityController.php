@@ -26,7 +26,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="security_registration")
      */
-    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
+    public function registration(Request $request, EntityManagerInterface $manager,TokenStorageInterface $tokenStorage, UserPasswordEncoderInterface $encoder,SessionInterface $session, EventDispatcherInterface $dispatcher)
     {
 
 
@@ -43,7 +43,16 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('security_login');
+            // Connexion effective de l'utilisateur
+            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+            $tokenStorage->setToken($token);
+
+            $session->set('_security_main', serialize($token));
+
+            $event = new InteractiveLoginEvent($request, $token);
+            $dispatcher->dispatch("security.interactive_login", $event);
+
+            return $this->redirectToRoute('annonces');
         }
 
         return $this->render('security/registration.html.twig',[
