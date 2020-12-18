@@ -50,20 +50,31 @@
 
 
 
-        <!-- contenus -->
-        <section class="content" style="margin: 10vh 35vw">
+        <!-- contenus login et inscription -->
+    {% if not app.user %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <section class="content col-md-4" style="margin: 15vh 0 " >
             <div class="container-fluid">
                 {% block content_login %}
                 {% endblock %}
             </div>
         </section>
+        <div class="col-md-4"></div>
+    </div>
+    {% else %}
         <!-- contenus -->
-        <section class="content" style="margin: 0 10vw">
+    <div class="row">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        <section class="content col-lg-10 col-md-10 col-sm-10 col-xs-10" style="margin: 15vh 0">
             <div class="container-fluid">
               {% block content %}
               {% endblock %}
           </div>
         </section>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+    </div>
+    {% endif %}
 
 
     <!-- infos en bas -->
