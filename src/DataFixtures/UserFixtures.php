@@ -29,10 +29,8 @@ class UserFixtures extends Fixture
 
             $user->setUsername($nom)
                  ->setEmail($nom."@".$faker->freeEmailDomain)
-                 ->setPassword("testtest1");
-            $hash = $encoder->encodePassword($user_list[$i], $user_list[$i]->getPassword());
-            $user_list[$i]->setPassword($hash);
-            $user->setFirstName($faker->firstName)
+                 ->setPassword($encoder->encodePassword($user, "testtest1"))
+                 ->setFirstName($faker->firstName)
                  ->setRoles(["ROLE_USER"])
                  ->setLastName($faker->lastName)
                  ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
@@ -71,21 +69,20 @@ class UserFixtures extends Fixture
         $userModo = new User();
         $userAdmin->setUsername("admin")
             ->setEmail($nom1."@".$faker->freeEmailDomain)
-            ->setPassword("testtest1")
+            ->setPassword($encoder->encodePassword($userAdmin, "testtest1"))
             ->setFirstName($faker->firstName)
             ->setRoles(["ROLE_ADMIN"])
             ->setLastName($faker->lastName)
             ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
         $userModo->setUsername("modo")
             ->setEmail($nom2."@".$faker->freeEmailDomain)
-            ->setPassword("testtest1")
+            ->setPassword($encoder->encodePassword($userModo, "testtest1"))
             ->setFirstName($faker->firstName)
             ->setRoles(["ROLE_MODO"])
             ->setLastName($faker->lastName)
             ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
 
-        $userAdmin->setPassword($encoder->encodePassword($userAdmin,$userAdmin->getPassword()));
-        $userModo->setPassword($encoder->encodePassword($userModo,$userModo->getPassword()));
+
         $manager->persist($userAdmin);
         $manager->persist($userModo);
 
