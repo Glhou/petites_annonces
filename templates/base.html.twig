@@ -36,11 +36,11 @@
                     <ul class="nav navbar-nav navbar-right">
                         {% if not app.user %}
                             <li class="nav-item">
-                                <a href="{{ path('security_login') }}" class="nav-link">Connexion</a>
+                                <a href="{{ path('security_login') }}" class="nav-link"><i class="material-icons">https</i></a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a href="{{ path('security_logout') }}" class="nav-link">Déconnexion</a>
+                                <a href="{{ path('security_logout') }}" class="nav-link"><i class="material-icons">exit_to_app</i></a>
                             </li>
                         {% endif %}
                     </ul>
