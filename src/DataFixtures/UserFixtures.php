@@ -29,16 +29,14 @@ class UserFixtures extends Fixture
 
             $user->setUsername($nom)
                  ->setEmail($nom."@".$faker->freeEmailDomain)
-                 ->setPassword("testtest1")
-                 ->setFirstName($faker->firstName)
+                 ->setPassword("testtest1");
+            $hash = $encoder->encodePassword($user_list[$i], $user_list[$i]->getPassword());
+            $user_list[$i]->setPassword($hash);
+            $user->setFirstName($faker->firstName)
                  ->setRoles(["ROLE_USER"])
                  ->setLastName($faker->lastName)
                  ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
             $user_list[$i] = $user;
-        }
-        for ($i = 1 ; $i <= 100; $i++){
-            $hash = $encoder->encodePassword($user_list[$i], $user_list[$i]->getPassword());
-            $user_list[$i]->setPassword($hash);
             $manager->persist($user_list[$i]);
         }
         for ($j = 1 ; $j <= mt_rand(150,250);$j++){
