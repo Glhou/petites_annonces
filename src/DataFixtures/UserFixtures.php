@@ -29,7 +29,7 @@ class UserFixtures extends Fixture
 
             $user->setUsername($nom)
                  ->setEmail($nom."@".$faker->freeEmailDomain)
-                 ->setPassword("test")
+                 ->setPassword("testtest1")
                  ->setFirstName($faker->firstName)
                  ->setRoles(["ROLE_USER"])
                  ->setLastName($faker->lastName)
@@ -73,14 +73,14 @@ class UserFixtures extends Fixture
         $userModo = new User();
         $userAdmin->setUsername("admin")
             ->setEmail($nom1."@".$faker->freeEmailDomain)
-            ->setPassword("test")
+            ->setPassword("testtest1")
             ->setFirstName($faker->firstName)
             ->setRoles(["ROLE_ADMIN"])
             ->setLastName($faker->lastName)
             ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
         $userModo->setUsername("modo")
             ->setEmail($nom2."@".$faker->freeEmailDomain)
-            ->setPassword("test")
+            ->setPassword("testtest1")
             ->setFirstName($faker->firstName)
             ->setRoles(["ROLE_MODO"])
             ->setLastName($faker->lastName)

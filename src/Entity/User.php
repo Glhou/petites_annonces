@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,22 +29,27 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank
      * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern = "/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/", message="Il faut 8 caractères minimum avec un nombre")
      */
     private $password;
 
     /**
      * @Assert\EqualTo(propertyPath="password", message="Les mots de passe ne correspondent pas")
+     * @Assert\NotBlank
      */
     private $confirm_password;
 
@@ -54,16 +60,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $promo;
 
