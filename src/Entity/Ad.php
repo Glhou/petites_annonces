@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeZone;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use App\Repository\AdRepository;
@@ -129,9 +131,9 @@ class Ad
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
+        $this->date = new DateTime(null, new DateTimeZone('Europe/Paris')); // c'est à l'heure de paris c'est bon.
 
         return $this;
     }
@@ -146,5 +148,9 @@ class Ad
         $this->type = $type;
 
         return $this;
+    }
+
+    public function __toString() {
+        return $this->title;
     }
 }

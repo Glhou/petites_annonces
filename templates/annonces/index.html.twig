@@ -4,17 +4,49 @@
 {% block title %} Petites Annonces {% endblock %}
 
 {% block content %}
-<!-- page des annonces -->
-    {% for annonce in Ad%}
-        <annonce>
-            <h2> {{ annonce.title}} </h2>
-            <div class="metadata"> 
-                Posté le {{annonce.date | date ('d/m/Y')}} à {{annonce.date | date ('H:i')}} par {{annonce.author.username}}.
+    <div class="card">
+        <div class="body">
+            {# Nouvelle annonce #}
+            <a class="btn btn-block btn-lg bg-purple waves-effect" style="margin-bottom: 3vh"
+               href="{{ path('new_annonce') }}">Nouvelle annonce</a>
+            {{ form_start(form) }}
+            {# Filtres #}
+            <div class="row clearfix">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6">
+                    <div class="form-group">
+                        <div class="form-line">
+                            {{ form_row(form.name) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6">
+                    <div class="form-group">
+                        <div class="form-line">
+                            {{ form_row(form.type) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+                    <button type="submit" class="btn btn-block bg-purple">Rechercher</button>
+                </div>
             </div>
-            <div class="content">
-                {{annonce.description}}
-            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
 
-        </annonce>
-    {% endfor %}
+
+
+    {# Page des annonces #}
+    <div class="card">
+        <div class="body">
+            {% for annonce in AdAll %}
+                {% include  "annonces/_annonce.html.twig" %}
+            {% endfor %}
+            <div class="pagination">
+                {{ knp_pagination_render(AdAll) }}
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

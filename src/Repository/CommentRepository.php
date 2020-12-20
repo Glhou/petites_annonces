@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Ad;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,6 +19,28 @@ class CommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Comment::class);
     }
+
+    public function findByDateWithId(Ad $ad)
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.date', 'DESC')
+            ->where('a.ad =:ad')
+            ->setParameter("ad",$ad)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByDateWithIdQuery(Ad $ad)
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.date', 'DESC')
+            ->where('a.ad =:ad')
+            ->setParameter("ad",$ad)
+            ->getQuery()
+            ;
+    }
+
 
     // /**
     //  * @return Comment[] Returns an array of Comment objects

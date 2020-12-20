@@ -1,0 +1,20 @@
+<annonce>
+    <div class="card">
+        <div class="header">
+            <h2>
+                <a href="{{ path("annonces_show",{id: annonce.id}) }}"> {{ annonce.title }} </a>
+                <small>{{ annonce.type | replace({1:"Objet trouvé",2:"Objet perdu",3:"Vente",4:"Recherche",5:"Tips"}) }}
+                    à {{ annonce.location }}</small>
+            </h2>
+            <div class="metadata">
+                Posté le {{ annonce.date | date ('d/m/Y') }}
+                à {{ annonce.date | date ('H:i') }} par {{ annonce.author.username }}.
+            </div>
+        </div>
+        <div class="body">
+            <div class="content">
+                {{ annonce.description }}
+            </div>
+        </div>
+    </div>
+</annonce>

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -85,9 +87,9 @@ class Comment
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
+        $this->date = new DateTime(null, new DateTimeZone('Europe/Paris')); // c'est à l'heure de paris c'est bon.
 
         return $this;
     }

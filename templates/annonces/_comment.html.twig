@@ -1,0 +1,8 @@
+<div class="card">
+    <div class="header">
+        Par {{ comment.author.username }} le {{ comment.date | date ('d/m/Y') }} à {{ comment.date | date('H:i') }}.
+    </div>
+    <div class="body">
+        {{ comment.content }}
+    </div>
+</div>

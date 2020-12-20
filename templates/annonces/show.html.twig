@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %} Petites Annonces {% endblock %}
+
+{% block content %}
+    <!-- page des annonces -->
+    <annonce>
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ ad.title }}
+                    <small>{{ ad.type | replace({1:"Objet trouvé",2:"Objet perdu",3:"Vente",4:"Recherche",5:"Tips"}) }}
+                        à {{ ad.location }}</small>
+                </h2>
+                <div class="metadata">
+                    Posté le {{ ad.date | date ('d/m/Y') }} à {{ ad.date | date ('H:i') }} par {{ ad.author.username }}.
+                </div>
+            </div>
+            <div class="body">
+                <div class="content" style="margin-bottom: 2vh">
+                    {{ ad.description }}
+                </div>
+                <!-- form pour ajouter un commentaire -->
+                <div class="card">
+                    <div class="body">
+                        {{ form_start(form) }}
+                        {{ form_row(form.content, {'label' : 'Nouveau commentaire', 'attr' : {'class': 'form-group from-float form-line form-control no-resize','placeholder' : 'Entrez votre commentaire','style': 'height:100px'}}) }}
+
+                        <button type="submit" class="btn btn-lg bg-pink"> Ajouter le commentaire</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                <!-- affichage des commentaires -->
+                {% for comment in comments %}
+                    {% if comment.ad.id == ad.id %}
+                        {% include "annonces/_comment.html.twig" %}
+                    {% endif %}
+                {% endfor %}
+                <div class="pagination">
+                    {{ knp_pagination_render(comments) }}
+                </div>
+            </div>
+        </div>
+    </annonce>
+{% endblock %}
