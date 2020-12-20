@@ -46,7 +46,7 @@ class UserFixtures extends Fixture
                 ->setDescription($faker->text($maxNbChars = 200))
                 ->setLocation($faker->city)
                 ->setDate($dateAd)
-                ->setType($faker->numberBetween($min = 0, $max = 5));
+                ->setType($faker->numberBetween($min = 1, $max = 5));
             $manager -> persist($ad);
 
             for ($l = 1; $l <= mt_rand(4,9); $l++){
