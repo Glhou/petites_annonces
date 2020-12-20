@@ -8,6 +8,7 @@ use App\Form\AdType;
 use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\DependencyInjection\Configuration;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +19,10 @@ use App\Entity\User;
 use App\Repository\AdRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Security\Core\Security;
+
+
 
 /**
  * Class AnnoncesController
@@ -58,7 +61,6 @@ class AnnoncesController extends AbstractController
      */
     public function newAnnonce(Request $request, EntityManagerInterface $manager)
     {
-
         $ad = new Ad();
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest($request);
@@ -71,7 +73,7 @@ class AnnoncesController extends AbstractController
             $ad->setResolved(false);
             $manager->persist($ad);
             $manager->flush();
-            return $this->redirectToRoute("annonces_show",["id" => $ad->getId()]);
+            return $this->redirectToRoute("annonces_show", ["id" => $ad->getId()]);
         }
 
 
@@ -85,40 +87,48 @@ class AnnoncesController extends AbstractController
 
     /**
      * @Route("/annonces/{id}/edit",name="modif_annonce")
+     * @Security ("is_granted('ANNONCE_EDIT', ad)")
      */
     public function modifAnnonce(Ad $ad, Request $request, EntityManagerInterface $manager)
     {
-        //Voter
-        if ($ad->getAuthor() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        } else {
-            $form = $this->createForm(AdType::class, $ad);
-            $form->handleRequest($request);
+        $form = $this->createForm(AdType::class, $ad);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                // on ajoute les donnés
-                $data = $form->getData();
-                $ad->setTitle($data->getTitle() . " ");// on ajoute un espace sinon il grogne parceque le titre
-                // existe déjà pour cet user, du coup l'espace change le titre et on le retrouve uniquement
-                // (une fois / ça se cumule pas) dans le formulaire.
-                $ad->setResolved($data->getResolved());
-                $ad->setDescription($data->getDescription());
-                $ad->setLocation($data->getLocation());
-                $ad->setType($data->getType());
-                $manager->persist($ad);
-                $manager->flush();
-                return $this->redirectToRoute('annonces_show', [
-                    'id' => $ad->getId(),
-                ]);
-            }
-
-
-            return $this->render('annonces/newAnnonce.html.twig', [
-                'form' => $form->createView(),
+        if ($form->isSubmitted() && $form->isValid()) {
+            // on ajoute les donnés
+            $data = $form->getData();
+            $ad->setTitle($data->getTitle() . " ");// on ajoute un espace sinon il grogne parceque le titre
+            // existe déjà pour cet user, du coup l'espace change le titre et on le retrouve uniquement
+            // (une fois / ça se cumule pas) dans le formulaire.
+            $ad->setResolved($data->getResolved());
+            $ad->setDescription($data->getDescription());
+            $ad->setLocation($data->getLocation());
+            $ad->setType($data->getType());
+            $manager->persist($ad);
+            $manager->flush();
+            return $this->redirectToRoute('annonces_show', [
+                'id' => $ad->getId(),
             ]);
         }
+
+        return $this->render('annonces/newAnnonce.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
     }
 
+    //supprime un commentaire
+    /**
+     * @Route("/commentaire/{id}",name="del_com")
+     * @Security ("is_granted('COMMENT_EDIT', comment)")
+     */
+    public function delCom(Comment $comment,EntityManagerInterface $manager){
+        $manager->remove($comment);
+        $manager->flush();
+        return $this->redirectToRoute('annonces_show', [
+            'id' => $comment->getAd()->getId(),
+        ]);
+    }
 
     // page d'une annonces avec les commentaires et un truc pour en ajouter
 
@@ -149,11 +159,9 @@ class AnnoncesController extends AbstractController
         }
 
         return $this->render('annonces/show.html.twig', [
-            'form' => $form->createView(), 'ad' => $ad, 'comments' => $comments, 'user' => $this->getUser(),
+            'form' => $form->createView(), 'ad' => $ad, 'comments' => $comments,
         ]);
     }
-
-
 
 
     /**

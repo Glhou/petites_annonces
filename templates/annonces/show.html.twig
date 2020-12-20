@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                        {% if ad.author == user.username %}
+                        {% if is_granted("ANNONCE_EDIT", ad) %}
                             <a href="{{ path("modif_annonce",{id:ad.id}) }}" class="btn btn-block bg-purple">
                                 Modifier</a>
                         {% endif %}
