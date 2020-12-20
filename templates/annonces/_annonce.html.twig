@@ -2,7 +2,7 @@
     <div class="card">
         <div class="header">
             <h2>
-                <a href="{{ path("annonces_show",{id: annonce.id}) }}"> {{ annonce.title }} </a>
+                {% if annonce.resolved == true%} <span class="label label-success">Résolue</span>  {% endif %} <a href="{{ path("annonces_show",{id: annonce.id}) }}"> {{ annonce.title }} </a>
                 <small>{{ annonce.type | replace({1:"Objet trouvé",2:"Objet perdu",3:"Vente",4:"Recherche",5:"Tips"}) }}
                     à {{ annonce.location }}</small>
             </h2>

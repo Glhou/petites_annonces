@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card" >
+                <div class="header">
+                    <h3>{{ title }}</h3>
+                </div>
+                <div class="body">
+                    {{ form_start(form) }}
+                    {{ form_row(form.type,{'label' : 'Type d\'annonce', 'attr' : {'class': 'filter-option form-group from-float form-line form-control'}}) }}
+                    {{ form_row(form.resolved,{'label' : 'Annonce Résolue', 'attr' : {'class': 'filter-option form-group from-float form-line form-control'}}) }}
+                    {{ form_row(form.title,{'label' : 'Titre', 'attr' : {'class': 'form-group from-float form-line form-control','placeholder' : 'Titre'}}) }}
+                    {{ form_row(form.description,{'label' : 'Description', 'attr' : {'class': 'form-group from-float form-line form-control','placeholder' : 'Description de l\'annonce'}}) }}
+                    {{ form_row(form.location,{'label' : 'Localisation', 'attr' : {'class': 'form-group from-float form-line form-control','placeholder' : 'Où ça se passe / s\'est passé'}}) }}
+
+                    <button type="submit" class="btn bg-pink" style="margin: 10px"> {{ button_text }} </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

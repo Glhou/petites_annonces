@@ -23,7 +23,13 @@ class AdType extends AbstractType
                     'Vente' => 3,
                     'Recherche' => 4,
                     'Tips' => 5,
-                ],]);
+                ],])
+            ->add('resolved', ChoiceType::class,[
+                'choices' =>[
+                    'Non' => false,
+                    'Oui' => true,
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

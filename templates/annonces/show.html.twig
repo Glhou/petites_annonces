@@ -8,13 +8,26 @@
     <annonce>
         <div class="card">
             <div class="header">
-                <h2>
-                    {{ ad.title }}
-                    <small>{{ ad.type | replace({1:"Objet trouvé",2:"Objet perdu",3:"Vente",4:"Recherche",5:"Tips"}) }}
-                        à {{ ad.location }}</small>
-                </h2>
-                <div class="metadata">
-                    Posté le {{ ad.date | date ('d/m/Y') }} à {{ ad.date | date ('H:i') }} par {{ ad.author.username }}.
+                <div class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+
+                        <h2>
+                            {% if ad.resolved == true%} <span class="label label-success">Résolue</span>  {% endif %}
+                            {{ ad.title }}
+                            <small>{{ ad.type | replace({1:"Objet trouvé",2:"Objet perdu",3:"Vente",4:"Recherche",5:"Tips"}) }}
+                                à {{ ad.location }}</small>
+                        </h2>
+                        <div class="metadata">
+                            Posté le {{ ad.date | date ('d/m/Y') }} à {{ ad.date | date ('H:i') }}
+                            par {{ ad.author.username }}.
+                        </div>
+                    </div>
+                    <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        {% if ad.author == user.username %}
+                            <a href="{{ path("modif_annonce",{id:ad.id}) }}" class="btn btn-block bg-purple">
+                                Modifier</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="body">
