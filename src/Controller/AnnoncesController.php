@@ -117,18 +117,24 @@ class AnnoncesController extends AbstractController
 
     }
 
-    //supprime un commentaire
+    //supprime une annonce
     /**
-     * @Route("/commentaire/{id}",name="del_com")
-     * @Security ("is_granted('COMMENT_EDIT', comment)")
+     * @Route("/annonces/{id}/delete",name="del_annonce")
+     * @Security ("is_granted('ANNONCE_EDIT', ad)")
      */
-    public function delCom(Comment $comment,EntityManagerInterface $manager){
-        $manager->remove($comment);
+    public function delAd(Ad $ad,EntityManagerInterface $manager,CommentRepository $commentRepository){
+        // on récupère tout les commentaires pour les supprimer
+        $currentComments = $commentRepository->findByDateWithAd($ad);
+        for ($i = 0; $i < count($currentComments); $i++ ){
+            // on supprime un a un les commentaires
+            $manager->remove($currentComments[$i]);
+        }
+        // on supprime ensuite l'annonce
+        $manager->remove($ad);
         $manager->flush();
-        return $this->redirectToRoute('annonces_show', [
-            'id' => $comment->getAd()->getId(),
-        ]);
+        return $this->redirectToRoute('accueil');
     }
+
 
     // page d'une annonces avec les commentaires et un truc pour en ajouter
 
@@ -138,7 +144,7 @@ class AnnoncesController extends AbstractController
     public function show(Ad $ad, CommentRepository $repoComment, EntityManagerInterface $manager, Request $request, PaginatorInterface $paginator)
     {
         $comments = $paginator->paginate(
-            $repoComment->findByDateWithIdQuery($ad), /* query NOT result */
+            $repoComment->findByDateWithAdQuery($ad), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         ); // commentaire par date décroissante comme ça on affiche en premier les dernier commentaires
@@ -163,6 +169,18 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
+    //supprime un commentaire
+    /**
+     * @Route("/commentaire/{id}",name="del_com")
+     * @Security ("is_granted('COMMENT_EDIT', comment)")
+     */
+    public function delCom(Comment $comment,EntityManagerInterface $manager){
+        $manager->remove($comment);
+        $manager->flush();
+        return $this->redirectToRoute('annonces_show', [
+            'id' => $comment->getAd()->getId(),
+        ]);
+    }
 
     /**
      * @Route("/accueil",name="accueil")

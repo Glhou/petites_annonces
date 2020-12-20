@@ -31,13 +31,24 @@ class CommentRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findByDateWithIdQuery(Ad $ad)
+    public function findByDateWithAdQuery(Ad $ad)
     {
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
             ->where('a.ad =:ad')
             ->setParameter("ad",$ad)
             ->getQuery()
+            ;
+    }
+
+    public function findByDateWithAd(Ad $ad)
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.date', 'DESC')
+            ->where('a.ad =:ad')
+            ->setParameter("ad",$ad)
+            ->getQuery()
+            ->getResult()
             ;
     }
 

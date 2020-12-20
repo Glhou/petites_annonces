@@ -26,6 +26,8 @@
                         {% if is_granted("ANNONCE_EDIT", ad) %}
                             <a href="{{ path("modif_annonce",{id:ad.id}) }}" class="btn btn-block bg-purple">
                                 Modifier</a>
+                            <a href="{{ path("del_annonce",{id:ad.id}) }}" class="btn btn-block bg-pink">
+                                Supprimer</a>
                         {% endif %}
                     </div>
                 </div>
