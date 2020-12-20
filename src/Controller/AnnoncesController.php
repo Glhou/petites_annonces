@@ -29,14 +29,13 @@ use Symfony\Component\Security\Core\Security;
 class AnnoncesController extends AbstractController
 {
     // page avec toutes les annonces à la chaine (sans commentaires)
-    // TODO: ajouter le nombre de commentaires peut être
-    // TODO: modifier entièrement la page pour que ça marche
     /**
      * @Route("/annonces", name="annonces")
      */
-    public function index(Request $request, AdRepository $adRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, AdRepository $adRepository, PaginatorInterface $paginator, CommentRepository $commentRepository): Response
     {
         $search = new AdSearch();
+        $search->setResolved(false);
         $form = $this->createForm(AdSearchType::class, $search);
         $form->handleRequest($request);
 
@@ -45,6 +44,7 @@ class AnnoncesController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );;//On prend toutes les annonces de la plus récente à la plus ancienne
+
 
         return $this->render('annonces/index.html.twig', [
             'AdAll' => $adAll, 'form' => $form->createView(),
@@ -71,7 +71,7 @@ class AnnoncesController extends AbstractController
             $ad->setResolved(false);
             $manager->persist($ad);
             $manager->flush();
-            return $this->redirectToRoute('annonces');
+            return $this->redirectToRoute("annonces_show",["id" => $ad->getId()]);
         }
 
 
@@ -82,6 +82,7 @@ class AnnoncesController extends AbstractController
 
 
     //modification d'une annonce
+
     /**
      * @Route("/annonces/{id}/edit",name="modif_annonce")
      */
@@ -120,7 +121,7 @@ class AnnoncesController extends AbstractController
 
 
     // page d'une annonces avec les commentaires et un truc pour en ajouter
-    // TODO: ajouter l'option de modification avec les droit avec les voters
+
     /**
      * @Route("/annonces/{id}", name="annonces_show")
      */
@@ -153,6 +154,32 @@ class AnnoncesController extends AbstractController
     }
 
 
-    //TODO: Page d'acceuil pour l'utilisateur
+
+
+    /**
+     * @Route("/accueil",name="accueil")
+     */
+    public function accueil(AdRepository $adRepository)
+    {
+        // pour les dernier trucs de l'user
+        $adLastUser = $adRepository->findLastByUser($this->get('security.token_storage')->getToken()->getUser());
+
+        // pour block centrale
+        $adAll = $adRepository->findAllByDate();
+        $ad1 = $adRepository->find1ByDate();
+        $ad2 = $adRepository->find2ByDate();
+        $ad3 = $adRepository->find3ByDate();
+        $ad4 = $adRepository->find4ByDate();
+        $ad5 = $adRepository->find5ByDate();
+
+        // pour les status à droite
+        $CountAll = $adRepository->numberOfAd();
+        $CountResolved = $adRepository->numberOfResolvedAd();
+        $CountUnresolved = $adRepository->numberOfUnresolvedAd();
+
+        return $this->render('annonces/accueil.html.twig', [
+            'AdAll' => $adAll, 'Ad1' => $ad1, 'Ad2' => $ad2, 'Ad3' => $ad3, 'Ad4' => $ad4, 'Ad5' => $ad5, 'AdUser' => $adLastUser, "CountAll" => $CountAll, "CountResolved" => $CountResolved, "CountUnresolved" => $CountUnresolved,
+        ]);
+    }
 
 }

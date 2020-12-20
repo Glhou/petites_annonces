@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
             $event = new InteractiveLoginEvent($request, $token);
             $dispatcher->dispatch("security.interactive_login", $event);
 
-            return $this->redirectToRoute('annonces');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('security/registration.html.twig',[
@@ -129,7 +129,7 @@ class SecurityController extends AbstractController
             }
 
             // Redirection vers l'accueil
-            return $this->redirectToRoute('annonces');
+            return $this->redirectToRoute('accueil');
         }
 
     }

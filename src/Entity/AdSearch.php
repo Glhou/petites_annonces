@@ -13,6 +13,28 @@ class AdSearch{
     private $name;
 
     /**
+     * @var true|false
+     */
+    private $resolved;
+
+    /**
+     * @return false|true
+     */
+
+    public function getResolved(): bool
+    {
+        return $this->resolved;
+    }
+
+    /**
+     * @param false|true $resolved
+     */
+    public function setResolved(bool $resolved): void
+    {
+        $this->resolved = $resolved;
+    }
+
+    /**
      * @return int|null
      */
     public function getType(): ?int

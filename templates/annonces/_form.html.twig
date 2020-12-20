@@ -8,12 +8,15 @@
                     <h3>{{ title }}</h3>
                 </div>
                 <div class="body">
+                    {% form_theme form 'form.html.twig' %}
                     {{ form_start(form) }}
-                    {{ form_row(form.type,{'label' : 'Type d\'annonce', 'attr' : {'class': 'filter-option form-group from-float form-line form-control'}}) }}
-                    {{ form_row(form.resolved,{'label' : 'Annonce Résolue', 'attr' : {'class': 'filter-option form-group from-float form-line form-control'}}) }}
-                    {{ form_row(form.title,{'label' : 'Titre', 'attr' : {'class': 'form-group from-float form-line form-control','placeholder' : 'Titre'}}) }}
-                    {{ form_row(form.description,{'label' : 'Description', 'attr' : {'class': 'form-group from-float form-line form-control','placeholder' : 'Description de l\'annonce'}}) }}
-                    {{ form_row(form.location,{'label' : 'Localisation', 'attr' : {'class': 'form-group from-float form-line form-control','placeholder' : 'Où ça se passe / s\'est passé'}}) }}
+                    <b>Type d'annonce</b>
+                    {{ form_row(form.type,{'label' : false}) }}
+                    <b>Résolu ?</b>
+                    {{ form_row(form.resolved,{'label' : false}) }}
+                    {{ form_row(form.title,{'label' : false, 'attr' : {'placeholder' : 'Titre'}}) }}
+                    {{ form_row(form.description,{'label' : false, 'attr' : {'placeholder' : 'Description de l\'annonce'}}) }}
+                    {{ form_row(form.location,{'label' : false, 'attr' : {'placeholder' : 'Où ça se passe / s\'est passé'}}) }}
 
                     <button type="submit" class="btn bg-pink" style="margin: 10px"> {{ button_text }} </button>
 

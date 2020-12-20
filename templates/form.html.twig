@@ -4,11 +4,11 @@
 
 {% block form_widget_simple -%}
     <div class="form-line {% if (not compound or force_error|default(false)) and not valid %} focused error{% endif %}">
-    {% if type is not defined or type not in ['file', 'hidden'] %}
-        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
-    {% endif %}
-    {{- parent() -}}
-       {{ block('form_label') }}
+        {% if type is not defined or type not in ['file', 'hidden'] %}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+        {% endif %}
+        {{- parent() -}}
+        {{ block('form_label') }}
 
 
     </div>
@@ -102,7 +102,7 @@
         {%- endif -%}
         {{- widget|raw }} {# Modif manuelle ici : Widget en dehors du label pour que ça marche avec Material #}
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-         {{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) -}}
+        {{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) -}}
         </label>
     {%- endif -%}
 {%- endblock checkbox_radio_label %}
@@ -115,54 +115,54 @@
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
     <div class="form-group form-float">
-    {# {{- form_label(form) -}}#}
-    {{- form_widget(form, widget_attr) -}}
-    {{- form_help(form) -}}
-    {{- form_errors(form) -}}
-    {% if label_attr.infosup is defined %}
-        <div class="help-info">{{ label_attr.infosup|raw }}</div>
-    {% endif %}
-</div>
+        {# {{- form_label(form) -}}#}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+        {% if label_attr.infosup is defined %}
+            <div class="help-info">{{ label_attr.infosup|raw }}</div>
+        {% endif %}
+    </div>
 {%- endblock form_row %}
 
 {% block button_row -%}
-<div class="form-group">
-    {{- form_widget(form) -}}
-</div>
+    <div class="form-group">
+        {{- form_widget(form) -}}
+    </div>
 {%- endblock button_row %}
 
 {% block choice_row -%}
-{% set force_error = true %}
-{{- block('form_row') }}
+    {% set force_error = true %}
+    {{- block('form_row') }}
 {%- endblock choice_row %}
 
 {% block date_row -%}
-{% set force_error = true %}
-{{- block('form_row') }}
+    {% set force_error = true %}
+    {{- block('form_row') }}
 {%- endblock date_row %}
 
 {% block time_row -%}
-{% set force_error = true %}
-{{- block('form_row') }}
+    {% set force_error = true %}
+    {{- block('form_row') }}
 {%- endblock time_row %}
 
 {% block datetime_row -%}
-{% set force_error = true %}
-{{- block('form_row') }}
+    {% set force_error = true %}
+    {{- block('form_row') }}
 {%- endblock datetime_row %}
 
 {% block checkbox_row -%}
-<div class="form-group{% if not valid %} has-error{% endif %}">
-    {{- form_widget(form) -}}
-    {{- form_errors(form) -}}
-</div>
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
 {%- endblock checkbox_row %}
 
 {% block radio_row -%}
-<div class="form-group{% if not valid %} has-error{% endif %}">
-    {{- form_widget(form) -}}
-    {{- form_errors(form) -}}
-</div>
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
 {%- endblock radio_row %}
 
 {# Errors #}
@@ -234,10 +234,10 @@
 {%- endblock form_label -%}
 
 {%- block textarea_widget -%}
-<div class="form-line {% if (not compound or force_error|default(false)) and not valid %} focused error{% endif %}">
-    {% if type is not defined or type not in ['file', 'hidden'] %}
-        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
-    {% endif %}
-    {{- parent() -}}
-</div>
+    <div class="form-line {% if (not compound or force_error|default(false)) and not valid %} focused error{% endif %}">
+        {% if type is not defined or type not in ['file', 'hidden'] %}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+        {% endif %}
+        {{- parent() -}}
+    </div>
 {%- endblock textarea_widget -%}

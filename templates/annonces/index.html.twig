@@ -9,22 +9,18 @@
             {# Nouvelle annonce #}
             <a class="btn btn-block btn-lg bg-purple waves-effect" style="margin-bottom: 3vh"
                href="{{ path('new_annonce') }}">Nouvelle annonce</a>
+            {% form_theme form 'form.html.twig' %}
             {{ form_start(form) }}
             {# Filtres #}
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            {{ form_row(form.name) }}
-                        </div>
-                    </div>
+                    {{ form_row(form.name) }}
                 </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            {{ form_row(form.type) }}
-                        </div>
-                    </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">
+                    {{ form_row(form.type) }}
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="margin-bottom: 10px">
+                    {{ form_row(form.resolved) }}
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
                     <button type="submit" class="btn btn-block bg-purple">Rechercher</button>

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ad;
 use App\Entity\AdSearch;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Migrations\Query\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,6 +27,7 @@ class AdRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;
@@ -54,6 +56,10 @@ class AdRepository extends ServiceEntityRepository
                 ->andWhere("a.type = :type")
                 ->setParameter("type",$search->getType());
         }
+        if($search->getResolved() == false){
+            $query = $query
+                ->andWhere("a.resolved = false");
+        }
 
         return $query->getQuery();
     }
@@ -63,6 +69,7 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
             ->andWhere('a.type = 1')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;
@@ -73,6 +80,7 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
             ->andWhere('a.type = 2')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;
@@ -83,6 +91,7 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
             ->andWhere('a.type = 3')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;
@@ -93,6 +102,7 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
             ->Where('a.type = 4')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;
@@ -103,11 +113,41 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->orderBy('a.date', 'DESC')
             ->andWhere('a.type = 5')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
             ;
     }
 
+    public function findLastByUser(User $user){
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.date', 'DESC')
+            ->andWhere('a.author = :user')
+            ->setParameter("user",$user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function numberOfAd(){
+        $q = $this->createQueryBuilder('a');
+        $q-> select($q->expr()->count('a'));
+        return $q->getQuery()->getSingleScalarResult();
+    }
+
+    public function numberOfResolvedAd(){
+        $q = $this->createQueryBuilder('a');
+        $q-> select($q->expr()->count('a'))
+        ->where("a.resolved = true");
+        return $q->getQuery()->getSingleScalarResult();
+    }
+
+    public function numberOfUnresolvedAd(){
+        $q = $this->createQueryBuilder('a');
+        $q-> select($q->expr()->count('a'))
+            ->where("a.resolved = false");
+        return $q->getQuery()->getSingleScalarResult();
+    }
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */

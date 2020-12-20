@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\AdSearch;
+use Doctrine\DBAL\Types\BooleanType;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,7 +30,6 @@ class AdSearchType extends AbstractType
                 ],
                 'attr' =>[
                     'placeholder' => "Type d'annonce",
-                    'class' => 'form-control',
                 ],
             ])
             ->add('name', TextType::class,[
@@ -35,8 +37,11 @@ class AdSearchType extends AbstractType
                 'label'=>false,
                 'attr' => [
                     'placeholder' => "Nom de l'annonce",
-                    'class' => 'form-control',
                 ],
+            ])
+            ->add('resolved', CheckboxType::class,[
+                'required' => false,
+                'label'=>'Résolu',
             ])
         ;
     }

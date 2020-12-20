@@ -27,7 +27,7 @@
         <nav class="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ path("annonces") }}">
+                    <a class="navbar-brand" href="{{ path("accueil") }}" data-toggle="tooltip" data-placement="bottom" title="Accueil">
                         Petites Annonces
                     </a>
                     <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
@@ -36,18 +36,23 @@
                     <ul class="nav navbar-nav navbar-right">
                         {% if not app.user %}
                             <li class="nav-item">
-                                <a href="{{ path('security_login') }}" class="nav-link"><i class="material-icons">https</i></a>
+                                <a href="{{ path('security_login') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Connexion" ><i class="material-icons">https</i></a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a href="{{ path('security_logout') }}" class="nav-link"><i class="material-icons">exit_to_app</i></a>
+                                <a href="{{ path('annonces') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Annonces"><i class="material-icons">book</i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('new_annonce') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Nouvelle annonce"><i class="material-icons">add_box</i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('security_logout') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Déconnexion"><i class="material-icons">exit_to_app</i></a>
                             </li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
-
 
 
         <!-- contenus login et inscription -->
