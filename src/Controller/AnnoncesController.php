@@ -56,22 +56,25 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
-    // page de création d'une annonce
+    // page de création et de modification d'une annonce
 
     /**
      * @Route("/new-annonce", name="new_annonce")
+     * @Route("/edit/{id}",name="modif_annonce")
+     * @Security ("is_granted('ANNONCE_EDIT', ad) or ad == null")
      */
-    public function newAnnonce(Request $request)
+    public function newAnnonce(?Ad $ad,Request $request)
     {
         $manager = $this->getDoctrine()->getManager();
-
-        $ad = new Ad();
+        if ($ad == null){
+            $ad = new Ad();
+        }
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // ajout de la date, de l'user et de resolved
-            $user = $this->get('security.token_storage')->getToken()->getUser();; // Récupère le user
+            $user = $this->getUser();; // Récupère le user
             $ad->setAuthor($user);
             $ad->setDate();
             $ad->setResolved(false);
@@ -87,41 +90,6 @@ class AnnoncesController extends AbstractController
     }
 
 
-    //modification d'une annonce
-
-    /**
-     * @Route("/edit/{id}",name="modif_annonce")
-     * @Security ("is_granted('ANNONCE_EDIT', ad)")
-     */
-    public function modifAnnonce(Ad $ad, Request $request)
-    {
-        $manager = $this->getDoctrine()->getManager();
-
-        $form = $this->createForm(AdType::class, $ad);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // on ajoute les donnés
-            $data = $form->getData();
-            $ad->setTitle($data->getTitle() . " ");// on ajoute un espace sinon il grogne parceque le titre
-            // existe déjà pour cet user, du coup l'espace change le titre et on le retrouve uniquement
-            // (une fois / ça se cumule pas) dans le formulaire.
-            $ad->setResolved($data->getResolved());
-            $ad->setDescription($data->getDescription());
-            $ad->setLocation($data->getLocation());
-            $ad->setType($data->getType());
-            $manager->persist($ad);
-            $manager->flush();
-            return $this->redirectToRoute('annonces_show', [
-                'id' => $ad->getId(),
-            ]);
-        }
-
-        return $this->render('annonces/newAnnonce.html.twig', [
-            'form' => $form->createView(),
-        ]);
-
-    }
 
     //supprime une annonce
 
