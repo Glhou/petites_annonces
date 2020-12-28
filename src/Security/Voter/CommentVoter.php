@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommentVoter extends Voter
 {
+    const COMMENT_EDIT = "COMMENT_EDIT";
     private $security;
 
     public function __construct(Security $security){
@@ -35,7 +36,7 @@ class CommentVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case 'COMMENT_EDIT':
+            case self::COMMENT_EDIT:
                 return ($this->security->isGranted('ROLE_ADMIN')) || ($this->security->isGranted('ROLE_MODO')) || ($user->getId() == $comment->getAuthor()->getId());
         }
 

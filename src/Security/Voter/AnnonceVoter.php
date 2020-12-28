@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class AnnonceVoter extends Voter
 {
+    const ANNONCE_EDIT = "ANNONCE_EDIT";
     private $security;
 
     public function __construct(Security $security){
@@ -20,7 +21,7 @@ class AnnonceVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['ANNONCE_EDIT'])
+        return in_array($attribute, [self::ANNONCE_EDIT])
             && $ad instanceof \App\Entity\Ad;
     }
 
@@ -33,9 +34,7 @@ class AnnonceVoter extends Voter
         }
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case 'ANNONCE_EDIT':
-                // logic to determine if the user can EDIT
-                // return true or false
+            case self::ANNONCE_EDIT:
                 return ($ad->getAuthor() == $user) || ($this->security->isGranted('ROLE_ADMIN'));
 
         }
