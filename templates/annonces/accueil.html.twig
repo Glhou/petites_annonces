@@ -3,14 +3,14 @@
 {% block content %}
     <div class="row">
         {# block gauche #}
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
                     <h4>
                         Mes dernières annonces
                     </h4>
                 </div>
-                <div class="body">
+                <div class="body scrollable">
                     {% for annonce in AdUser %}
                         {% include 'annonces/_annonce.html.twig' %}
                     {% endfor %}
@@ -20,14 +20,14 @@
 
 
         {# Listing au milieu #}
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
                     <div class="row">
-                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <div class="col-lg-9 col-md-7 col-sm-6 col-xs-12">
                             <h3>Dernières annonces</h3>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
                             <a href=" {{ path("annonces") }}" class="btn btn-block bg-pink">Toutes les annonces</a>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
 
                     <!-- Tab panes -->
 
-                    <div class="tab-content">
+                    <div class="tab-content scrollable">
                         <div role="tabpanel" class="tab-pane fade in active" id="tout">
 
                             {% for annonce in AdAll %}
@@ -97,7 +97,7 @@
 
         {# block droite #}
 
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
             <div class="card">
                 <div class="header">
                     <a class="btn btn-block btn-lg bg-pink waves-effect" style="margin-bottom: 3vh"

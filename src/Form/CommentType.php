@@ -13,7 +13,12 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content',TextareaType::class, ['attr' => ['class' => 'tinymce'],])
+            ->add('content',TextareaType::class, [
+                'data' => "",
+                'attr' => [
+                    'class' => 'tinymce',
+                ],
+                ])
         ;
     }
 

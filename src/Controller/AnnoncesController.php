@@ -23,20 +23,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
-
 /**
  * Class AnnoncesController
  * @package App\Controller
  * @IsGranted("ROLE_USER")
+ * @Route("/annonces")
  */
 class AnnoncesController extends AbstractController
 {
     // page avec toutes les annonces à la chaine (sans commentaires)
     /**
-     * @Route("/annonces", name="annonces")
+     * @Route("/", name="annonces")
      */
-    public function index(Request $request, AdRepository $adRepository, PaginatorInterface $paginator, CommentRepository $commentRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $adRepository = $this->getDoctrine()->getRepository("App\Entity\Ad");
+
         $search = new AdSearch();
         $search->setResolved(false);
         $form = $this->createForm(AdSearchType::class, $search);
@@ -59,8 +61,10 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/new-annonce", name="new_annonce")
      */
-    public function newAnnonce(Request $request, EntityManagerInterface $manager)
+    public function newAnnonce(Request $request)
     {
+        $manager = $this->getDoctrine()->getManager();
+
         $ad = new Ad();
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest($request);
@@ -86,11 +90,13 @@ class AnnoncesController extends AbstractController
     //modification d'une annonce
 
     /**
-     * @Route("/annonces/{id}/edit",name="modif_annonce")
+     * @Route("/edit/{id}",name="modif_annonce")
      * @Security ("is_granted('ANNONCE_EDIT', ad)")
      */
-    public function modifAnnonce(Ad $ad, Request $request, EntityManagerInterface $manager)
+    public function modifAnnonce(Ad $ad, Request $request)
     {
+        $manager = $this->getDoctrine()->getManager();
+
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest($request);
 
@@ -118,14 +124,19 @@ class AnnoncesController extends AbstractController
     }
 
     //supprime une annonce
+
     /**
-     * @Route("/annonces/{id}/delete",name="del_annonce")
+     * @Route("/delete/{id}",name="del_annonce")
      * @Security ("is_granted('ANNONCE_EDIT', ad)")
      */
-    public function delAd(Ad $ad,EntityManagerInterface $manager,CommentRepository $commentRepository){
+    public function delAd(Ad $ad)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $commentRepository = $this->getDoctrine()->getRepository("App\Entity\Comment");
+
         // on récupère tout les commentaires pour les supprimer
         $currentComments = $commentRepository->findByDateWithAd($ad);
-        for ($i = 0; $i < count($currentComments); $i++ ){
+        for ($i = 0; $i < count($currentComments); $i++) {
             // on supprime un a un les commentaires
             $manager->remove($currentComments[$i]);
         }
@@ -139,10 +150,13 @@ class AnnoncesController extends AbstractController
     // page d'une annonces avec les commentaires et un truc pour en ajouter
 
     /**
-     * @Route("/annonces/{id}", name="annonces_show")
+     * @Route("/{id}", name="annonces_show")
      */
-    public function show(Ad $ad, CommentRepository $repoComment, EntityManagerInterface $manager, Request $request, PaginatorInterface $paginator)
+    public function show(Ad $ad, Request $request, PaginatorInterface $paginator)
     {
+        $manager = $this->getDoctrine()->getManager();
+        $repoComment = $this->getDoctrine()->getRepository("App\Entity\Comment");
+
         $comments = $paginator->paginate(
             $repoComment->findByDateWithAdQuery($ad), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
@@ -162,19 +176,28 @@ class AnnoncesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($comment);
             $manager->flush();
+            return $this->redirectToRoute("annonces_show", [
+                'id' => $ad->getId(),
+            ]);
         }
 
         return $this->render('annonces/show.html.twig', [
-            'form' => $form->createView(), 'ad' => $ad, 'comments' => $comments,
+            'form' => $form->createView(),
+            'ad' => $ad,
+            'comments' => $comments,
         ]);
     }
 
     //supprime un commentaire
+
     /**
      * @Route("/commentaire/{id}",name="del_com")
      * @Security ("is_granted('COMMENT_EDIT', comment)")
      */
-    public function delCom(Comment $comment,EntityManagerInterface $manager){
+    public function delCom(Comment $comment)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
         $manager->remove($comment);
         $manager->flush();
         return $this->redirectToRoute('annonces_show', [
@@ -182,30 +205,5 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/accueil",name="accueil")
-     */
-    public function accueil(AdRepository $adRepository)
-    {
-        // pour les dernier trucs de l'user
-        $adLastUser = $adRepository->findLastByUser($this->get('security.token_storage')->getToken()->getUser());
-
-        // pour block centrale
-        $adAll = $adRepository->findAllByDate();
-        $ad1 = $adRepository->find1ByDate();
-        $ad2 = $adRepository->find2ByDate();
-        $ad3 = $adRepository->find3ByDate();
-        $ad4 = $adRepository->find4ByDate();
-        $ad5 = $adRepository->find5ByDate();
-
-        // pour les status à droite
-        $CountAll = $adRepository->numberOfAd();
-        $CountResolved = $adRepository->numberOfResolvedAd();
-        $CountUnresolved = $adRepository->numberOfUnresolvedAd();
-
-        return $this->render('annonces/accueil.html.twig', [
-            'AdAll' => $adAll, 'Ad1' => $ad1, 'Ad2' => $ad2, 'Ad3' => $ad3, 'Ad4' => $ad4, 'Ad5' => $ad5, 'AdUser' => $adLastUser, "CountAll" => $CountAll, "CountResolved" => $CountResolved, "CountUnresolved" => $CountUnresolved,
-        ]);
-    }
 
 }

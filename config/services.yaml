@@ -33,3 +33,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # extension twig utilisée pour faire une troncature de mots (notament dans les annonces : on limite le nombre de mots) (à installer avec "composer require twig/extensions -w")
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

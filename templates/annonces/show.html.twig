@@ -9,7 +9,7 @@
         <div class="card">
             <div class="header">
                 <div class="row">
-                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <div class="col-lg-10 col-md-10 col-sm-7 col-xs-12">
 
                         <h2>
                             {% if ad.resolved == true%} <span class="label label-success">Résolue</span>  {% endif %}
@@ -22,7 +22,7 @@
                             par {{ ad.author.username }}.
                         </div>
                     </div>
-                    <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class=" col-lg-2 col-md-2 col-sm-5 col-xs-12">
                         {% if is_granted("ANNONCE_EDIT", ad) %}
                             <a href="{{ path("modif_annonce",{id:ad.id}) }}" class="btn btn-block bg-purple">
                                 Modifier</a>
@@ -42,11 +42,14 @@
                         {{ form_start(form) }}
                         {{ form_row(form.content, {'label' : 'Nouveau commentaire', 'attr' : {'class': 'form-group from-float form-line form-control no-resize','placeholder' : 'Entrez votre commentaire','style': 'height:100px'}}) }}
 
-                        <button type="submit" class="btn btn-lg bg-pink"> Ajouter le commentaire</button>
+                        <button type="submit" class="btn btn-lg bg-pink" > Ajouter le commentaire</button>
                         {{ form_end(form) }}
                     </div>
                 </div>
                 <!-- affichage des commentaires -->
+                <div class="pagination">
+                    {{ knp_pagination_render(comments) }}
+                </div>
                 {% for comment in comments %}
                     {% if comment.ad.id == ad.id %}
                         {% include "annonces/_comment.html.twig" %}

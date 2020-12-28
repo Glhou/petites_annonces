@@ -22,6 +22,7 @@ class AdSearchType extends AbstractType
                 'required' => false,
                 'label'=>false,
                 'choices'  => [
+                    'Choisir le type d\'annonce'=> null,
                     'Objet trouvé' => 1,
                     'Objet perdu' => 2,
                     'Vente' => 3,

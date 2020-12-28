@@ -13,7 +13,7 @@
         </div>
         <div class="body">
             <div class="content">
-                {{ annonce.description }}
+                {{ annonce.description | truncate(200, true) }}
             </div>
         </div>
     </div>

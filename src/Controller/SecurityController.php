@@ -26,9 +26,9 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="security_registration")
      */
-    public function registration(Request $request, EntityManagerInterface $manager,TokenStorageInterface $tokenStorage, UserPasswordEncoderInterface $encoder,SessionInterface $session, EventDispatcherInterface $dispatcher)
+    public function registration(Request $request,TokenStorageInterface $tokenStorage, UserPasswordEncoderInterface $encoder,SessionInterface $session, EventDispatcherInterface $dispatcher)
     {
-
+        $manager = $this->getDoctrine()->getManager();
 
         $user = new User();
 
@@ -75,8 +75,9 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="user_login")
      */
-    public function index(Request $request, TokenStorageInterface $tokenStorage, SessionInterface $session, EventDispatcherInterface $dispatcher,EntityManagerInterface $manager)
+    public function index(Request $request, TokenStorageInterface $tokenStorage, SessionInterface $session, EventDispatcherInterface $dispatcher)
     {
+        $manager = $this->getDoctrine()->getManager();
         $id = $this->getParameter('oauth_id');
         $secret = $this->getParameter('oauth_secret');
         $base = $this->getParameter('oauth_base');
