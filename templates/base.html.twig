@@ -39,6 +39,11 @@
                                 <a href="{{ path('security_login') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Connexion" ><i class="material-icons">https</i></a>
                             </li>
                         {% else %}
+                            {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                                <li class="nav-item">
+                                    <a href="{{ path('admin') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Annonces"><i class="material-icons">account_balance</i></a>
+                                </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a href="{{ path('annonces') }}" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Annonces"><i class="material-icons">book</i></a>
                             </li>

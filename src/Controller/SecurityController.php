@@ -125,7 +125,7 @@ class SecurityController extends AbstractController
                 $session->set('_security_main', serialize($token));
 
                 $event = new InteractiveLoginEvent($request, $token);
-                $dispatcher->dispatch("security.interactive_login", $event);
+                $dispatcher->dispatch($event);
 
             }
 
