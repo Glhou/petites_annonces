@@ -26,10 +26,11 @@ class UserFixtures extends Fixture
         for ($i = 1 ; $i <= 100; $i++){
             $user = new User();
             $nom = $faker->userName;
-
+            $pass = $encoder->encodePassword($user, "testtest1");
             $user->setUsername($nom)
                  ->setEmail($nom."@".$faker->freeEmailDomain)
-                 ->setPassword($encoder->encodePassword($user, "testtest1"))
+                 ->setPassword($pass)
+                 ->setConfirmPassword($pass)
                  ->setFirstName($faker->firstName)
                  ->setRoles(["ROLE_USER"])
                  ->setLastName($faker->lastName)
@@ -67,16 +68,20 @@ class UserFixtures extends Fixture
         $nom2 = $faker->userName;
         $userAdmin = new User();
         $userModo = new User();
+        $pass1 = $encoder->encodePassword($userAdmin, "testtest1");
+        $pass2 = $encoder->encodePassword($userModo, "testtest1");
         $userAdmin->setUsername("admin")
             ->setEmail($nom1."@".$faker->freeEmailDomain)
-            ->setPassword($encoder->encodePassword($userAdmin, "testtest1"))
+            ->setPassword($pass1)
+            ->setConfirmPassword($pass1)
             ->setFirstName($faker->firstName)
             ->setRoles(["ROLE_ADMIN"])
             ->setLastName($faker->lastName)
             ->setPromo($faker->numberBetween($min = 2010, $max = 2023));
         $userModo->setUsername("modo")
             ->setEmail($nom2."@".$faker->freeEmailDomain)
-            ->setPassword($encoder->encodePassword($userModo, "testtest1"))
+            ->setPassword($pass2)
+            ->setConfirmPassword($pass2)
             ->setFirstName($faker->firstName)
             ->setRoles(["ROLE_MODO"])
             ->setLastName($faker->lastName)
