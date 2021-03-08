@@ -114,6 +114,31 @@ class AnnoncesController extends AbstractController
         return $this->redirectToRoute('accueil');
     }
 
+    // supprime une annonce sur la page admin (histoire de pas être redirigé sur l'acceuil à chaque fois
+    /**
+     * @Route("/delete/admin/{id}",name="del_annonce_admin")
+     * @Security ("is_granted('ANNONCE_EDIT', ad)")
+     */
+    public function delAdAdmin(Ad $ad)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $commentRepository = $this->getDoctrine()->getRepository("App\Entity\Comment");
+
+        // on récupère tout les commentaires pour les supprimer
+        $currentComments = $commentRepository->findByDateWithAd($ad);
+        for ($i = 0; $i < count($currentComments); $i++) {
+            // on supprime un a un les commentaires
+            $manager->remove($currentComments[$i]);
+        }
+
+        // on supprime ensuite l'annonce
+        $manager->remove($ad);
+        $manager->flush();
+        return $this->redirectToRoute('gestionUser', [
+            'id' => $ad->getAuthor()->getId(),
+        ]);
+    }
+
 
     // page d'une annonces avec les commentaires et un truc pour en ajouter
 
@@ -173,5 +198,21 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
+    //supprime un commentaire pour la page de gestion admin histoire d'être redirigé au bon endroit
+
+    /**
+     * @Route("/commentaire/admin/{id}",name="del_com_admin")
+     * @Security ("is_granted('COMMENT_EDIT', comment)")
+     */
+    public function delComAdmin(Comment $comment)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->remove($comment);
+        $manager->flush();
+        return $this->redirectToRoute('gestionUser', [
+            'id' => $comment->getAuthor()->getId(),
+        ]);
+    }
 
 }

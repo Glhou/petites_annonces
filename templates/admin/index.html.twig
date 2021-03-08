@@ -1,7 +1,144 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Panneau d'administration{% endblock %}
 
-{% block body %}
+{% block content %}
+    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <div class="info-box-2 bg-purple hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">done</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Nombre d'Annonces</div>
+                        <div class="number">{{ adNumber }}</div>
+                    </div>
+                </div>
+                <div class="info-box-2 bg-deep-purple hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">done</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Annonces résolues</div>
+                        <div class="number">{{ resoAdNumber }}</div>
+                    </div>
+                </div>
+                <div class="info-box-2 bg-indigo hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">done</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Annonces non résolues</div>
+                        <div class="number">{{ unresoAdNumber }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h4>
+                    Utilisateurs
+                </h4>
+            </div>
+            <div class="body">
+                <table class="table table-condensed dataTable">
+                    <thread>
+                        <tr role="row">
+                            <th class="sorting_asc">
+                                Utilisateur
+                            </th>
+                            <th data-orderable="false" class="text-center"><span data-toggle="tooltip"
+                                                                                 data-placement="bottom"
+                                                                                 title="A les plein pouvoirs">Admin <i
+                                            class="fas fa-info-circle" style="color:silver;"></i></span></th>
+                            <th data-orderable="false" class="text-center"><span data-toggle="tooltip"
+                                                                                 data-placement="bottom"
+                                                                                 title="Peut modérer">Modo <i
+                                            class="fas fa-info-circle" style="color:silver;"></i></span></th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    {% for User in users %}
+                        <tr role="row">
+                            <td>{{ User.username }}</td>
+                            <td class="text-center">{% if User.roles[0] == "ROLE_ADMIN" %}<i class="material-icons">check</i>{% endif %}
+                            </td>
+                            <td class="text-center">{% if User.roles[0] == "ROLE_MODO" %}<i
+                                        class="material-icons">check</i>{% endif %}</td>
+                            <td><a href="{{ path('edit_role',{id:User.id}) }}" class="btn bg-pink">Modifier</a></td>
+                            <td><a class="btn bg-deep-purple"
+                                   href="{{ path('gestionUser',{id:User.id}) }}">Publications</a></td>
+                            <td>
+                                <button type="button" class="btn bg-indigo" data-toggle="modal"
+                                        data-target="#DelModal{{ User.id }}">
+                                    Supprimer
+                                </button>
+                            </td>
+
+                            <!-- DELMODAL -->
+                            <div class="modal fade" id="DelModal{{ User.id }}" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Voulez-vous vraiment
+                                                supprimer
+                                                {{ User.username }} ?</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Annuler
+                                            </button>
+                                            <a href="{{ path('del_user',{id:User.id}) }}"
+                                               class="btn bg-red">Supprimer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% if user is defined %}
+        <!-- EDIT MODAL -->
+        <div class="modal fade in" id="EditModal{{ user.id }}" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:block">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modifier les rôles de
+                            {{ user.username }} ?</h5>
+                        <a class="close" href="{{ path("admin") }}" aria-hidden="false"><span aria-hidden="true">&times;</span></a>
+                    </div>
+                    {% form_theme form 'form.html.twig' %}
+                    {{ form_start(form) }}
+                    <div class="modal-body">
+                        {{ form_row(form.roles) }}
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-block bg-default" style="color: unset;" href="{{ path("admin") }}">Annuler</a>
+                        <button type="submit" class="btn btn-block bg-purple">Valider</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
 
 {% endblock %}

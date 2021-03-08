@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h4>
+                    Annonces de {{ user.username }}
+                </h4>
+            </div>
+            <div class="body">
+                <table class="table table-condensed dataTable">
+                    <thread>
+                        <tr role="row">
+                            <th class="sorting_asc">
+                                Titre
+                            </th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    {% for ad in adUser %}
+                        <tr role="row">
+                            <td><a href="{{ path("annonces_show",{id:ad.id}) }}">{{ ad.title }}</a></td>
+                            <td><a class="btn bg-red" href="{{ path("del_annonce_admin",{id:ad.id}) }}">Supprimer</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h4>
+                    Commentaires de {{ user.username }}
+                </h4>
+            </div>
+            <div class="body">
+                <table class="table table-condensed dataTable">
+                    <thread>
+                        <tr role="row">
+                            <th class="sorting_asc">
+                                Titre
+                            </th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    {% for comment in commentUser %}
+                        <tr role="row">
+                            <td><a href="{{ path('annonces_show',{id:comment.ad.id}) }}">{{ comment.content }}</a></td>
+                            <td><a class="btn bg-red" href="{{ path('del_com_admin',{id:comment.id}) }}">Supprimer</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
