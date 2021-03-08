@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ad;
 use App\Entity\Comment;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,6 +51,13 @@ class CommentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+    public function commentByUser(User $User){
+        return $this->createQueryBuilder("a")
+            ->where('a.author = :user')
+            ->setParameter("user",$User)
+            ->getQuery()
+            ->getResult();
     }
 
 

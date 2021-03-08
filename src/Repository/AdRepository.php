@@ -148,6 +148,14 @@ class AdRepository extends ServiceEntityRepository
             ->where("a.resolved = false");
         return $q->getQuery()->getSingleScalarResult();
     }
+
+    public function adByUser(User $User){
+        return $this->createQueryBuilder("a")
+            ->where('a.author = :user')
+            ->setParameter("user",$User)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */
