@@ -60,6 +60,22 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function nbCommentByAd(){
+        $q = $this->createQueryBuilder("a");
+        return $q->select($q->expr()->count('a'))
+            ->groupBy("a.ad")
+            ->getQuery()
+            ->getScalarResult();
+    }
+
+    public function nbOfComments(){
+        $q = $this->createQueryBuilder("a");
+        return $q->select($q->expr()->count('a'))
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
 
     // /**
     //  * @return Comment[] Returns an array of Comment objects

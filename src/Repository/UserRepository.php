@@ -33,4 +33,11 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function nbOfUsers(){
+        $q = $this->createQueryBuilder("a");
+        return $q->select($q->expr()->count('a'))
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

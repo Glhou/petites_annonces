@@ -156,6 +156,16 @@ class AdRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function nbOfAdByType(int $type){
+        $q = $this->createQueryBuilder("a");
+        return $q->select($q->expr()->count('a'))
+            ->where("a.type =:type")
+            ->setParameter("type",$type)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */

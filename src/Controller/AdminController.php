@@ -6,6 +6,7 @@ use App\Entity\AdSearch;
 use App\Entity\User;
 use App\Form\AdSearchType;
 use App\Form\RoleUserType;
+use OAuth2\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+    // fonction pour calculer la moyenne du nombre de commentaire par ad
+    private function avgCommentByAd(array $a){
+        $average = 0;
+        $length = count($a);
+        for($i=0;$i<$length;$i++){
+            $average += intval($a[$i][1]);
+        }
+        return $average / $length;
+
+    }
+
     /**
      * @Route("/", name="admin")
      * @IsGranted("ROLE_ADMIN")
@@ -29,11 +41,25 @@ class AdminController extends AbstractController
     {
         $adRepository = $this->getDoctrine()->getRepository("App\Entity\Ad");
         $userRepository = $this->getDoctrine()->getRepository("App\Entity\User");
+        $commentRepository = $this->getDoctrine()->getRepository("App\Entity\Comment");
 
         // chiffres clés
         $adNumber = $adRepository->numberOfAd();
         $resoAdNumber = $adRepository->numberOfResolvedAd();
         $unresoAdNumber = $adRepository->numberOfUnresolvedAd();
+        $adNumber1 = $adRepository->nbOfAdByType(1);
+        $adNumber2 = $adRepository->nbOfAdByType(2);
+        $adNumber3 = $adRepository->nbOfAdByType(3);
+        $adNumber4 = $adRepository->nbOfAdByType(4);
+        $adNumber5 = $adRepository->nbOfAdByType(5);
+        $userNumber = $userRepository->nbOfUsers();
+        $numberCommentByAd = $commentRepository->nbcommentByAd();
+        $commentNumber = $commentRepository->nbOfComments();
+
+        //Calcul de la moyenne de comment by ad
+        $averageCommentByAd = $this->avgCommentByAd($numberCommentByAd);
+
+
         //utilisateurs
         $users = $userRepository->allUsers();
 
@@ -42,6 +68,14 @@ class AdminController extends AbstractController
             "resoAdNumber"=>$resoAdNumber,
             "unresoAdNumber"=>$unresoAdNumber,
             "users" => $users,
+            "adNumber1" => $adNumber1,
+            "adNumber2" => $adNumber2,
+            "adNumber3" => $adNumber3,
+            "adNumber4" => $adNumber4,
+            "adNumber5" => $adNumber5,
+            "userNumber" => $userNumber,
+            "averageComment" => $averageCommentByAd,
+            "commentNumber" => $commentNumber,
         ]);
     }
 
