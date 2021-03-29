@@ -143,45 +143,59 @@ class AdminController extends AbstractController
         return $this->redirectToRoute("admin");
     }
 
-
     /**
-     * @Route ("/edit-role/{id}",name="edit_role")
-     * @IsGranted ("ROLE_ADMIN")
+     * @Route ("/promote-modo/{id}",name="promote_modo")
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function editRole(Request $request,$id){
-
-        $adRepository = $this->getDoctrine()->getRepository("App\Entity\Ad");
-        $userRepository = $this->getDoctrine()->getRepository("App\Entity\User");
-
-        // chiffres clés
-        $adNumber = $adRepository->numberOfAd();
-        $resoAdNumber = $adRepository->numberOfResolvedAd();
-        $unresoAdNumber = $adRepository->numberOfUnresolvedAd();
-        //utilisateurs
-        $users = $userRepository->allUsers();
-
-
+    public function promoteModo($id){
         $manager = $this->getDoctrine()->getManager();
         $userRepository = $this->getDoctrine()->getRepository("App\Entity\User");
-
         $user = $userRepository->getUserById($id)[0];
+        $user->setRoles(["ROLE_MODO"]);
+        $manager->persist($user);
+        $manager->flush();
+        return $this->redirectToRoute("admin");
+    }
 
-        $form = $this->createForm(RoleUserType::class, $user);
-        $form->handleRequest($request);
+    /**
+     * @Route ("/promote-admin/{id}",name="promote_admin")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function promoteAdmin($id){
+        $manager = $this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository("App\Entity\User");
+        $user = $userRepository->getUserById($id)[0];
+        $user->setRoles(["ROLE_ADMIN"]);
+        $manager->persist($user);
+        $manager->flush();
+        return $this->redirectToRoute("admin");
+    }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($user);
-            $manager->flush();
-            return $this->redirectToRoute("admin");
-        }
+    /**
+     * @Route ("/demote-modo/{id}",name="demote_modo")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function demoteModo($id){
+        $manager = $this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository("App\Entity\User");
+        $user = $userRepository->getUserById($id)[0];
+        $user->setRoles(["ROLE_USER"]);
+        $manager->persist($user);
+        $manager->flush();
+        return $this->redirectToRoute("admin");
+    }
 
-        return $this->render('admin/index.html.twig', [
-            "adNumber"=>$adNumber,
-            "resoAdNumber"=>$resoAdNumber,
-            "unresoAdNumber"=>$unresoAdNumber,
-            "users" => $users,
-            "form" => $form->createView(),
-            "user" => $user,
-        ]);
+    /**
+     * @Route ("/demote-admin/{id}",name="demote_admin")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function demoteAdmin($id){
+        $manager = $this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository("App\Entity\User");
+        $user = $userRepository->getUserById($id)[0];
+        $user->setRoles(["ROLE_MODO"]);
+        $manager->persist($user);
+        $manager->flush();
+        return $this->redirectToRoute("admin");
     }
 }

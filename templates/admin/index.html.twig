@@ -136,11 +136,13 @@
                     {% for User in users %}
                         <tr role="row">
                             <td>{{ User.username }}</td>
-                            <td class="text-center">{% if User.roles[0] == "ROLE_ADMIN" %}<i class="material-icons">check</i>{% endif %}
+                            <td class="text-center">{% if User.roles[0] == "ROLE_ADMIN" %}<a class="btn btn-danger" href="{{ path("demote_admin",{id:User.id}) }}">Destituer</a>
+                                {% else %}<a class="btn btn-success" href="{{ path("promote_admin",{id:User.id}) }}">Promotion</a>
+                                {% endif %}
                             </td>
-                            <td class="text-center">{% if User.roles[0] == "ROLE_MODO" %}<i
-                                        class="material-icons">check</i>{% endif %}</td>
-                            <td><a href="{{ path('edit_role',{id:User.id}) }}" class="btn bg-pink">Modifier</a></td>
+                            <td class="text-center">{% if User.roles[0] == "ROLE_MODO" %}<a class="btn btn-danger" href="{{ path("demote_modo",{id:User.id}) }}">Destituer</a>
+                                {% else %}<a class="btn btn-success" href="{{ path("promote_modo",{id:User.id}) }}">Promotion</a>
+                                {% endif %}</td>
                             <td><a class="btn bg-deep-purple"
                                    href="{{ path('gestionUser',{id:User.id}) }}">Publications</a></td>
                             <td>
@@ -185,32 +187,6 @@
         </div>
     </div>
 
-    {% if user is defined %}
-        <!-- EDIT MODAL -->
-        <div class="modal fade in" id="EditModal{{ user.id }}" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:block">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modifier les rôles de
-                            {{ user.username }} ?</h5>
-                        <a class="close" href="{{ path("admin") }}" aria-hidden="false"><span aria-hidden="true">&times;</span></a>
-                    </div>
-                    {% form_theme form 'form.html.twig' %}
-                    {{ form_start(form) }}
-                    <div class="modal-body">
-                        {{ form_row(form.roles) }}
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-block bg-default" style="color: unset;" href="{{ path("admin") }}">Annuler</a>
-                        <button type="submit" class="btn btn-block bg-purple">Valider</button>
-                    </div>
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-
-    {% endif %}
 
 
 {% endblock %}
