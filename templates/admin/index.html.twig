@@ -136,12 +136,16 @@
                     {% for User in users %}
                         <tr role="row">
                             <td>{{ User.username }}</td>
-                            <td class="text-center">{% if User.roles[0] == "ROLE_ADMIN" %}<a class="btn btn-danger" href="{{ path("demote_admin",{id:User.id}) }}">Destituer</a>
-                                {% else %}<a class="btn btn-success" href="{{ path("promote_admin",{id:User.id}) }}">Promotion</a>
+                            <td class="text-center">{% if User.roles[0] == "ROLE_ADMIN" and app.user.id != User.id %}<a class="btn btn-danger" href="{{ path("demote_admin",{id:User.id}) }}">Destituer</a>
+                                {% else %}{% if app.user.id != User.id %}<a class="btn btn-success" href="{{ path("promote_admin",{id:User.id}) }}">Promotion</a>
+                                    {% else %}{% if User.roles[0] == "ROLE_ADMIN" %}<i class="material-icons">check</i>{% endif %}
+                                    {% endif %}
                                 {% endif %}
                             </td>
-                            <td class="text-center">{% if User.roles[0] == "ROLE_MODO" %}<a class="btn btn-danger" href="{{ path("demote_modo",{id:User.id}) }}">Destituer</a>
-                                {% else %}<a class="btn btn-success" href="{{ path("promote_modo",{id:User.id}) }}">Promotion</a>
+                            <td class="text-center">{% if User.roles[0] == "ROLE_MODO" and app.user.id != User.id %}<a class="btn btn-danger" href="{{ path("demote_modo",{id:User.id}) }}">Destituer</a>
+                                {% else %}{% if app.user.id != User.id %}<a class="btn btn-success" href="{{ path("promote_modo",{id:User.id}) }}">Promotion</a>
+                                    {% else %}{% if User.roles[0] == "ROLE_MODO" %}<i class="material-icons">check</i>{% endif %}
+                                {% endif %}
                                 {% endif %}</td>
                             <td><a class="btn bg-deep-purple"
                                    href="{{ path('gestionUser',{id:User.id}) }}">Publications</a></td>
