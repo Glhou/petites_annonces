@@ -166,6 +166,14 @@ class AdRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function oldResolvedAd(){
+        return $this->createQueryBuilder("a")
+            ->where("a.date < DATE_SUB(CURRENT_DATE(), 1, 'month')")
+            ->andWhere("a.resolved = true")
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */
